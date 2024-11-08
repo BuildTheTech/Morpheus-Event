@@ -13,9 +13,6 @@ ticket_numbers = [entry['raffleTicketNumber'] for entry in data]
 # Scramble the user addresses
 random.shuffle(user_addresses)
 
-# Scramble the raffle ticket numbers
-random.shuffle(ticket_numbers)
-
 # Assign the scrambled raffle ticket numbers to the scrambled user addresses
 scrambled_data = [
     {'user': user_addresses[i], 'raffleTicketNumber': ticket_numbers[i]}
