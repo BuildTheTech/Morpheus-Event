@@ -7,6 +7,10 @@ const PORT = 3000;
 let rawData = fs.readFileSync('./scrambled_and_randomized_morphMints.json');
 let data = JSON.parse(rawData);
 
+app.get('/list', (req, res) => {
+    res.send(data);
+});
+
 // Endpoint to search by user address
 app.get('/search', (req, res) => {
     const user = req.query.user;
@@ -24,6 +28,23 @@ app.get('/search', (req, res) => {
     }
 
     res.send({ user, tickets });
+});
+
+// Endpoint to search by ticket number
+app.get('/searchByTicket', (req, res) => {
+    const ticketNumber = req.query.ticketNumber;
+    if (!ticketNumber) {
+        return res.status(400).send({ error: 'Ticket number is required' });
+    }
+
+    // Find the entry with the given raffle ticket number
+    const entry = data.find(entry => entry.raffleTicketNumber === ticketNumber);
+
+    if (!entry) {
+        return res.status(404).send({ message: 'No user found for this ticket number' });
+    }
+
+    res.send({ ticketNumber, user: entry.user });
 });
 
 // Start the server
